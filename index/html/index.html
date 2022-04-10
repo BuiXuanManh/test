@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../js/bootstrap-3.1.1-dist/css/bootstrap.min.css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var i=1;
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+            function KiemtraMa(){
+                var re= /^[A-Z]{3}\-[A-Z]{3}\-\d{2}\-\d{4}$/;
+                if ($("#txtMa").val()==""){
+                    $("#tbMa").html("* Bắt buộc nhập");
+                    return false;
+                }
+                if(!re.test($("#txtMa").val())){
+                    $("#tbMa").html("* Mã tour theo mẫu: XXX-XXX-00-0000");
+                    return false;
+                }
+                $("#tbMa").html("*");
+                return true;
+            }
+            $("#txtMa").blur(KiemtraMa);
+            function KiemtraDD(){
+                if ($("#txtDiemDen").val()==""){
+                    $("#tbDiemDen").html("* Bắt buộc nhập");
+                    return false;
+                }
+                $("#tbDiemDen").html("*");
+                return true;
+            }
+            $("#txtDiemDen").blur(KiemtraDD);
+            function KiemtraNgayKH(){
+                if ($("#txtNgay").val()==""){
+                    $("#tbNgay").html("* Bắt buộc nhập");
+                    return false;
+                }
+                var day= new Date($("#txtNgay").val());
+                var today= new Date();
+                today.setDate(today.getDate()+30);
+                if(day<today){
+                    $("#tbNgay").html("* Ngày khởi hành phải sq=au ngày hiện tại 30 ngày");
+                    return false;
+                }
+                $("#tbNgay").html("*");
+                return true;
+            }
+            $("#txtNgay").blur(KiemtraNgayKH);
+            function KiemtraGia(){
+                var gia= $("#txtGia").val();
+                if (gia==""){
+                    $("#tbGia").html("* Bắt buộc nhập");
+                    return false;
+                }
+                if(isNaN(gia)){
+                    $("#tbGia").html("* Phải nhập số");
+                    return false;
+                }
+                $("#tbGia").html("*");
+                return true;
+            }
+            $("#txtGia").blur(KiemtraGia);
+            $("#btnSave").click(function() {
+                if(!KiemtraMa()||!KiemtraDD()||!KiemtraNgayKH()||!KiemtraGia()){
+                    $("#thongbao").html("Mời bạn nhập đúng và đầy đủ thông tin")
+                    return false;
+                }
+                var matour= $("#txtMa").val();
+                var dd= $("#txtDiemDen").val();
+                var ngay= $("#txtNgay").val();
+                var tg= $("#txtTG").val();
+                var gia= $("#txtGia").val();
+                var anh= $("#txtanh").val().substring(12);
+                var them= "<tr><th>"+(i++)+"</th><th>"+matour+"</th><th>"+dd+"</th><th>"+ngay+"</th><th>"+tg+
+                    "</th><th>"+gia+"</th><th>"+anh+"</th></tr>";
+                        $("table tbody").append(them);
+                        $("#myModal").modal("hide");
+                        return true;
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="container" >
+        <div class="col-md-12">
+            <header>
+                <img id="txtanh" src="../img/banner-5.png">
+            </header>
+        </div>
+        <div class="col-md-12">
+            <nav class="navbar-collapse">
+                <ul class="navbar-nav nav">
+                    <li><a href="#" id="dn">Đăng nhập</a></li>
+                    <li><a href="#" id="myBtn">Mở tour mới</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <section class="table-responsive">
+                <table class="table table-striped">
+                    <caption><h4>DANH SÁCH TOUR - DU LỊCH VIỆT</h4></caption>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã Tour</th>
+                            <th>Hành trình</th>
+                            <th>Ngày khởi hành</th>
+                            <th>Thời gian</th>
+                            <th>Giá tour</th>
+                            <th>Ảnh đại diện</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+        <div class="col-md-12" style="text-align: center;">
+            <footer>SVTH: Nguyen Van A - MSSV: 14103589 Lop DHKTPM12A</footer>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 style="text-align: center;">THÔNG TIN TOUR</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <div id="thongbao" class="text-danger" style="text-align: center;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtMa" class="control-label col-xs-3">Mã tour </label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="HNI-HCM-12-2018" id="txtMa" placeholder="Nhap theo mau: XXX-XXX-mm-yyyy">
+                                <span id="tbMa" class="text-danger">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDiemDen" class="control-label col-xs-3">Hành Trình</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="txtDiemDen" placeholder="Nhập Hành Trình">
+                                <span id="tbDiemDen" class="text-danger">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtNgay" class="control-label col-xs-3">Ngày khởi hành</label>
+                            <div class="col-md-9">
+                                <input type="date" id="txtNgay" class="text-danger">
+                                <span id="tbNgay" class="text-danger">*</span>
+                            </div>   
+                        </div>
+                        <div class="form-group">
+                            <label for="txtTG" class="control-label col-xs-3">Thoi Gian</label>
+                            <div class="col-md-9">
+                                <input type="text" id="txtTG" class="form-control">
+                                <span id="tbNgay" class="text-danger">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtGia" class="control-label col-xs-3">Giá Tour</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="txtGia" placeholder="số >0">
+                                <span id="tbGia" class="text-danger">*</span>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="txtanh" class="control-label col-xs-3">Anh dai dien</label>
+                            <div class="col-md-9">
+                                <input type="file" class="form-control" id="txtanh" accept=".jpg, .jpeg, .png">
+                                <span id="tbFile" class="text-danger">*</span>
+                            </div>
+                        </div>
+                        <button type="button" id="btnSave" class="btn btn-success btn-block">Lưu</button>
+                    </form>
+                </div>
+                <div class="moldal-footer" >
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
